@@ -110,18 +110,6 @@ NODE_ENV=development
 
 ---
 
-## 🚂 Deploy to Railway
-
-1. Push your code to GitHub
-2. Go to [railway.app](https://railway.app) → New Project → Deploy from GitHub
-3. Add a MongoDB plugin (or use MongoDB Atlas)
-4. Set environment variables:
-   - `MONGODB_URI` — your MongoDB connection string
-   - `JWT_SECRET` — a random secret (e.g., use `openssl rand -hex 32`)
-   - `NODE_ENV` — `production`
-5. Deploy! Railway auto-detects Node.js and runs `npm start`
-
----
 
 ## 📁 Project Structure
 
@@ -168,4 +156,4 @@ taskflow/
 
 ## 📝 License
 
-MIT
+Gaurav Kumar
