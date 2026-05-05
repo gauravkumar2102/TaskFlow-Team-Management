@@ -14,14 +14,14 @@ const userRoutes = require('./routes/users');
 
 const app = express();
 
-// Security middleware
+// -------------------- SECURITY MIDDLEWARE --------------------
 app.use(helmet({ contentSecurityPolicy: false }));
 app.use(cors());
 app.use(morgan('dev'));
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true }));
 
-// Rate limiting
+// -------------------- RATE LIMIT --------------------
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000,
   max: 100,
@@ -29,26 +29,39 @@ const limiter = rateLimit({
 });
 app.use('/api/', limiter);
 
-// Static files
+// -------------------- STATIC FILES --------------------
+// VERY IMPORTANT: must be before routes
 app.use(express.static(path.join(__dirname, '../public')));
 
-// API Routes
+// -------------------- API ROUTES --------------------
 app.use('/api/auth', authRoutes);
 app.use('/api/projects', projectRoutes);
 app.use('/api/tasks', taskRoutes);
 app.use('/api/users', userRoutes);
 
-// Health check
+// -------------------- HEALTH CHECK --------------------
 app.get('/api/health', (req, res) => {
   res.json({ status: 'OK', timestamp: new Date().toISOString() });
 });
 
-// Serve frontend
-app.get('*', (req, res) => {
+// -------------------- FRONTEND ROUTE FIX --------------------
+// Only send index.html for non-API and non-static requests
+app.get('*', (req, res, next) => {
+  // Skip API routes
+  if (req.path.startsWith('/api')) {
+    return next();
+  }
+
+  // Skip static files (anything with extension like .js, .css, .png)
+  if (path.extname(req.path)) {
+    return next();
+  }
+
+  // Serve frontend
   res.sendFile(path.join(__dirname, '../public/index.html'));
 });
 
-// Error handler
+// -------------------- ERROR HANDLER --------------------
 app.use((err, req, res, next) => {
   console.error(err.stack);
   res.status(err.status || 500).json({
@@ -56,11 +69,13 @@ app.use((err, req, res, next) => {
   });
 });
 
-// Database connection
+// -------------------- DATABASE CONNECTION --------------------
 const MONGODB_URI = process.env.MONGODB_URI;
+
 mongoose.connect(MONGODB_URI)
   .then(() => {
     console.log('Connected to MongoDB');
+
     const PORT = process.env.PORT || 3000;
     app.listen(PORT, () => {
       console.log(`TaskFlow running on http://localhost:${PORT}`);
