@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TaskFlow — Project Management</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+  <div id="app">
+    <!-- Auth screens -->
+    <div id="auth-screen" class="screen active">
+      <div class="auth-bg">
+        <div class="auth-grid"></div>
+        <div class="auth-blobs">
+          <div class="blob blob-1"></div>
+          <div class="blob blob-2"></div>
+          <div class="blob blob-3"></div>
+        </div>
+      </div>
+      <div class="auth-container">
+        <div class="auth-brand">
+          <div class="brand-icon">
+            <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
+              <rect width="32" height="32" rx="10" fill="url(#brandGrad)"/>
+              <path d="M8 11h10M8 16h14M8 21h8" stroke="white" stroke-width="2.5" stroke-linecap="round"/>
+              <circle cx="22" cy="11" r="3" fill="white" opacity="0.9"/>
+              <defs>
+                <linearGradient id="brandGrad" x1="0" y1="0" x2="32" y2="32">
+                  <stop stop-color="#6366f1"/>
+                  <stop offset="1" stop-color="#8b5cf6"/>
+                </linearGradient>
+              </defs>
+            </svg>
+          </div>
+          <span class="brand-name">TaskFlow</span>
+        </div>
+
+        <div class="auth-card" id="login-card">
+          <div class="auth-card-header">
+            <h1>Welcome back</h1>
+            <p>Sign in to your workspace</p>
+          </div>
+          <form class="auth-form" id="login-form">
+            <div class="form-group">
+              <label>Email address</label>
+              <input type="email" id="login-email" placeholder="you@company.com" required>
+            </div>
+            <div class="form-group">
+              <label>Password</label>
+              <input type="password" id="login-password" placeholder="••••••••" required>
+            </div>
+            <div id="login-error" class="form-error hidden"></div>
+            <button type="submit" class="btn-primary btn-full" id="login-btn">
+              <span>Sign in</span>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </button>
+          </form>
+          <div class="auth-switch">
+            Don't have an account? <a href="#" id="go-signup">Create one</a>
+          </div>
+          <div class="demo-hint">
+            <span>Demo: </span><code>demo@taskflow.dev</code> / <code>demo1234</code>
+          </div>
+        </div>
+
+        <div class="auth-card hidden" id="signup-card">
+          <div class="auth-card-header">
+            <h1>Get started</h1>
+            <p>Create your free account</p>
+          </div>
+          <form class="auth-form" id="signup-form">
+            <div class="form-group">
+              <label>Full name</label>
+              <input type="text" id="signup-name" placeholder="Jane Smith" required>
+            </div>
+            <div class="form-group">
+              <label>Email address</label>
+              <input type="email" id="signup-email" placeholder="you@company.com" required>
+            </div>
+            <div class="form-group">
+              <label>Password</label>
+              <input type="password" id="signup-password" placeholder="Min. 6 characters" required>
+            </div>
+            <div id="signup-error" class="form-error hidden"></div>
+            <button type="submit" class="btn-primary btn-full" id="signup-btn">
+              <span>Create account</span>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </button>
+          </form>
+          <div class="auth-switch">
+            Already have an account? <a href="#" id="go-login">Sign in</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Main App -->
+    <div id="app-screen" class="screen hidden">
+      <!-- Sidebar -->
+      <aside class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+          <div class="brand-icon small">
+            <svg width="22" height="22" viewBox="0 0 32 32" fill="none">
+              <rect width="32" height="32" rx="10" fill="url(#brandGrad2)"/>
+              <path d="M8 11h10M8 16h14M8 21h8" stroke="white" stroke-width="2.5" stroke-linecap="round"/>
+              <circle cx="22" cy="11" r="3" fill="white" opacity="0.9"/>
+              <defs><linearGradient id="brandGrad2" x1="0" y1="0" x2="32" y2="32"><stop stop-color="#6366f1"/><stop offset="1" stop-color="#8b5cf6"/></linearGradient></defs>
+            </svg>
+          </div>
+          <span class="brand-name">TaskFlow</span>
+          <button class="sidebar-close" id="sidebar-close">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg>
+          </button>
+        </div>
+
+        <nav class="sidebar-nav">
+          <a href="#" class="nav-item active" data-view="dashboard">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+            Dashboard
+          </a>
+          <a href="#" class="nav-item" data-view="projects">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 7a2 2 0 012-2h4l2 3h10a2 2 0 012 2v7a2 2 0 01-2 2H4a2 2 0 01-2-2V7z"/></svg>
+            Projects
+          </a>
+          <a href="#" class="nav-item" data-view="my-tasks">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>
+            My Tasks
+          </a>
+        </nav>
+
+        <div class="sidebar-projects" id="sidebar-projects">
+          <div class="sidebar-section-label">Projects</div>
+          <div id="sidebar-project-list"></div>
+          <button class="sidebar-new-project" id="sidebar-new-project-btn">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12h14"/></svg>
+            New Project
+          </button>
+        </div>
+
+        <div class="sidebar-user" id="sidebar-user">
+          <div class="user-avatar" id="user-avatar-sidebar">JD</div>
+          <div class="user-info">
+            <div class="user-name" id="sidebar-user-name">John Doe</div>
+            <div class="user-email" id="sidebar-user-email">john@example.com</div>
+          </div>
+          <button class="logout-btn" id="logout-btn" title="Sign out">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/><polyline points="16,17 21,12 16,7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+          </button>
+        </div>
+      </aside>
+
+      <!-- Main content -->
+      <main class="main-content">
+        <div class="topbar">
+          <button class="menu-toggle" id="menu-toggle">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+          </button>
+          <div class="topbar-title" id="topbar-title">Dashboard</div>
+          <div class="topbar-actions" id="topbar-actions"></div>
+        </div>
+
+        <!-- Views -->
+        <div id="view-dashboard" class="view active">
+          <div class="view-header">
+            <div>
+              <h2 class="view-title" id="dash-greeting">Good morning 👋</h2>
+              <p class="view-subtitle">Here's what's happening today</p>
+            </div>
+          </div>
+
+          <div class="stats-grid" id="stats-grid">
+            <div class="stat-card">
+              <div class="stat-icon" style="background:rgba(99,102,241,0.12);color:#6366f1">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>
+              </div>
+              <div class="stat-info">
+                <div class="stat-value" id="stat-total">0</div>
+                <div class="stat-label">Total Tasks</div>
+              </div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-icon" style="background:rgba(245,158,11,0.12);color:#f59e0b">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12,6 12,12 16,14"/></svg>
+              </div>
+              <div class="stat-info">
+                <div class="stat-value" id="stat-in-progress">0</div>
+                <div class="stat-label">In Progress</div>
+              </div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-icon" style="background:rgba(16,185,129,0.12);color:#10b981">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22,4 12,14.01 9,11.01"/></svg>
+              </div>
+              <div class="stat-info">
+                <div class="stat-value" id="stat-done">0</div>
+                <div class="stat-label">Completed</div>
+              </div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-icon" style="background:rgba(239,68,68,0.12);color:#ef4444">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+              </div>
+              <div class="stat-info">
+                <div class="stat-value" id="stat-overdue">0</div>
+                <div class="stat-label">Overdue</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="dash-grid">
+            <div class="dash-section">
+              <div class="section-header">
+                <h3>Recent Tasks</h3>
+                <a href="#" class="section-link" data-view="my-tasks">View all</a>
+              </div>
+              <div id="recent-tasks" class="task-list-compact"></div>
+            </div>
+            <div class="dash-section">
+              <div class="section-header">
+                <h3>Overdue Tasks</h3>
+              </div>
+              <div id="overdue-tasks" class="task-list-compact"></div>
+            </div>
+          </div>
+        </div>
+
+        <div id="view-projects" class="view hidden">
+          <div class="view-header">
+            <div>
+              <h2 class="view-title">Projects</h2>
+              <p class="view-subtitle" id="projects-subtitle">Your workspaces</p>
+            </div>
+            <button class="btn-primary" id="new-project-btn">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12h14"/></svg>
+              New Project
+            </button>
+          </div>
+          <div class="projects-grid" id="projects-grid"></div>
+        </div>
+
+        <div id="view-my-tasks" class="view hidden">
+          <div class="view-header">
+            <div>
+              <h2 class="view-title">My Tasks</h2>
+              <p class="view-subtitle">Tasks assigned to you</p>
+            </div>
+          </div>
+          <div class="tasks-filters" id="my-tasks-filters">
+            <button class="filter-btn active" data-status="">All</button>
+            <button class="filter-btn" data-status="Todo">Todo</button>
+            <button class="filter-btn" data-status="In Progress">In Progress</button>
+            <button class="filter-btn" data-status="In Review">In Review</button>
+            <button class="filter-btn" data-status="Done">Done</button>
+          </div>
+          <div id="my-tasks-list" class="tasks-list"></div>
+        </div>
+
+        <div id="view-project-detail" class="view hidden">
+          <div class="view-header">
+            <div class="project-header-info">
+              <div class="project-color-dot" id="project-detail-color"></div>
+              <div>
+                <h2 class="view-title" id="project-detail-name">Project</h2>
+                <p class="view-subtitle" id="project-detail-desc"></p>
+              </div>
+            </div>
+            <div class="project-header-actions">
+              <span class="role-badge" id="project-role-badge">Member</span>
+              <button class="btn-primary" id="new-task-btn">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12h14"/></svg>
+                Add Task
+              </button>
+              <button class="btn-ghost" id="project-settings-btn">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg>
+                Settings
+              </button>
+            </div>
+          </div>
+
+          <div class="project-stats-bar" id="project-stats-bar"></div>
+
+          <div class="kanban-tabs">
+            <button class="kanban-tab active" data-tab="board">Board</button>
+            <button class="kanban-tab" data-tab="list">List</button>
+            <button class="kanban-tab" data-tab="members">Members</button>
+          </div>
+
+          <div id="tab-board" class="tab-content active">
+            <div class="kanban-board" id="kanban-board"></div>
+          </div>
+          <div id="tab-list" class="tab-content hidden">
+            <div id="task-list-view" class="tasks-list"></div>
+          </div>
+          <div id="tab-members" class="tab-content hidden">
+            <div id="members-view"></div>
+          </div>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <!-- Modals -->
+  <div class="modal-overlay hidden" id="modal-overlay">
+    <div class="modal" id="modal">
+      <div class="modal-header">
+        <h3 class="modal-title" id="modal-title">Modal</h3>
+        <button class="modal-close" id="modal-close">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg>
+        </button>
+      </div>
+      <div class="modal-body" id="modal-body"></div>
+    </div>
+  </div>
+
+  <!-- Toast -->
+  <div id="toast-container"></div>
+
+  <script src="/js/api.js"></script>
+  <script src="/js/app.js"></script>
+</body>
+</html>
